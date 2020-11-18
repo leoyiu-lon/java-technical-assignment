@@ -4,4 +4,6 @@ import java.math.BigDecimal;
 
 public interface Item {
     BigDecimal price();
+    public ProductName getProductName();
+    public ProductType getProductType();
 }

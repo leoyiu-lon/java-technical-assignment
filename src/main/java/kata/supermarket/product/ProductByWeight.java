@@ -2,11 +2,12 @@ package kata.supermarket.product;
 
 import java.math.BigDecimal;
 
-public class ProductByWeight {
+public class ProductByWeight extends AbstractProduct{
 
     private final BigDecimal pricePerKilo;
 
-    public ProductByWeight(final BigDecimal pricePerKilo) {
+    public ProductByWeight(ProductName productName, ProductType productType, final BigDecimal pricePerKilo) {
+        super(productName, productType);
         this.pricePerKilo = pricePerKilo;
     }
 
