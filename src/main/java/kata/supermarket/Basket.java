@@ -1,5 +1,6 @@
 package kata.supermarket;
 
+import kata.supermarket.discount.Discount;
 import kata.supermarket.product.Item;
 
 import java.math.BigDecimal;
@@ -10,9 +11,11 @@ import java.util.List;
 
 public class Basket {
     private final List<Item> items;
+    private Discount availableDiscount;
 
-    public Basket() {
+    public Basket(Discount availableDiscount) {
         this.items = new ArrayList<>();
+        this.availableDiscount = availableDiscount;
     }
 
     public void add(final Item item) {
@@ -49,6 +52,9 @@ public class Basket {
          *  which provides that functionality.
          */
         private BigDecimal discounts() {
+            if(availableDiscount != null){
+                return availableDiscount.calculateDiscount(items);
+            }
             return BigDecimal.ZERO;
         }
 
