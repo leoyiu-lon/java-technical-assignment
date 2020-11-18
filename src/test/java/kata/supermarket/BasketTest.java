@@ -30,8 +30,14 @@ class BasketTest {
                 multipleItemsPricedByWeight(),
                 buyOneMilkGetOneFree(),
                 buyOneVegetableGetOneFree(),
-                buyOneGetOneFreeForSingleProductAndProductGroup()
+                buyOneGetOneFreeForSingleProductAndProductGroup(),
+                buyThreeItemForThePriceOfTwo()
         );
+    }
+
+    private static Arguments buyThreeItemForThePriceOfTwo() {
+        return Arguments.of("buyThreeItemForThePriceOfTwo", "0.98", Arrays.asList(aPintOfMilk(), aPintOfMilk(), aPintOfMilk()),
+                new FreeItemDiscount(new ProductNameConditionChecker(ProductName.MILK), 3, 1));
     }
 
     private static Arguments buyOneGetOneFreeForSingleProductAndProductGroup() {
