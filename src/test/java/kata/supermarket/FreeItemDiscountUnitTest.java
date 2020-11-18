@@ -9,6 +9,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Arrays;
 import java.util.List;
 
@@ -33,6 +34,6 @@ public class FreeItemDiscountUnitTest {
         when(conditionChecker.filterItems(any())).thenReturn(testingItems);
 
         FreeItemDiscount freeItemDiscount = new FreeItemDiscount(conditionChecker, 3, 2);
-        assertEquals(22, freeItemDiscount.calculateDiscount(testingItems));
+        assertEquals(new BigDecimal(22).setScale(2, RoundingMode.HALF_UP), freeItemDiscount.calculateDiscount(testingItems));
     }
 }

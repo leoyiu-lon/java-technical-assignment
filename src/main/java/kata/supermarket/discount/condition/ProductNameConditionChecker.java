@@ -4,6 +4,7 @@ import kata.supermarket.product.Item;
 import kata.supermarket.product.ProductName;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ProductNameConditionChecker implements ConditionChecker{
     public final ProductName productName;
@@ -14,6 +15,6 @@ public class ProductNameConditionChecker implements ConditionChecker{
 
     @Override
     public List<Item> filterItems(List<Item> items){
-        return null;
+        return items.stream().filter(item -> productName == item.getProductName()).collect(Collectors.toList());
     }
 }
