@@ -29,8 +29,15 @@ class BasketTest {
                 aSingleItemPricedByWeight(),
                 multipleItemsPricedByWeight(),
                 buyOneMilkGetOneFree(),
-                buyOneVegetableGetOneFree()
+                buyOneVegetableGetOneFree(),
+                buyOneGetOneFreeForSingleProductAndProductGroup()
         );
+    }
+
+    private static Arguments buyOneGetOneFreeForSingleProductAndProductGroup() {
+        Discount discount = new FreeItemDiscount(new ProductTypeConditionChecker(ProductType.VEGETABLES), 2, 1);
+        discount.setNext(new FreeItemDiscount(new ProductNameConditionChecker(ProductName.MILK), 2, 1));
+        return Arguments.of("buyOneGetOneFreeForSingleProductAndProductGroup", "0.79", Arrays.asList(aPackOfOnion(), aPackOfTomato(), aPintOfMilk(), aPintOfMilk()), discount);
     }
 
     private static Arguments buyOneVegetableGetOneFree() {
