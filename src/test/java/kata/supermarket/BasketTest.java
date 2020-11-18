@@ -5,6 +5,7 @@ import kata.supermarket.discount.Discount;
 import kata.supermarket.discount.NoDiscount;
 import kata.supermarket.discount.condition.ConditionChecker;
 import kata.supermarket.discount.condition.ProductNameConditionChecker;
+import kata.supermarket.discount.condition.ProductTypeConditionChecker;
 import kata.supermarket.product.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -27,8 +28,14 @@ class BasketTest {
                 multipleItemsPricedPerUnit(),
                 aSingleItemPricedByWeight(),
                 multipleItemsPricedByWeight(),
-                buyOneMilkGetOneFree()
+                buyOneMilkGetOneFree(),
+                buyOneVegetableGetOneFree()
         );
+    }
+
+    private static Arguments buyOneVegetableGetOneFree() {
+        return Arguments.of("buyOneVegetableSGetOneFree", "0.30", Arrays.asList(aPackOfOnion(), aPackOfTomato()),
+                new FreeItemDiscount(new ProductTypeConditionChecker(ProductType.VEGETABLES), 2, 1));
     }
 
     private static Arguments buyOneMilkGetOneFree() {
@@ -82,6 +89,14 @@ class BasketTest {
 
     private static Item twoHundredGramsOfPickAndMix() {
         return aKiloOfPickAndMix().weighing(new BigDecimal(".2"));
+    }
+
+    private static Item aPackOfTomato(){
+        return new ProductByUnit(ProductName.TOMATO, ProductType.VEGETABLES, new BigDecimal("0.3")).oneOf();
+    }
+
+    private static Item aPackOfOnion(){
+        return new ProductByUnit(ProductName.ONION, ProductType.VEGETABLES, new BigDecimal("0.2")).oneOf();
     }
 
     @DisplayName("basket provides its total value when containing...")
