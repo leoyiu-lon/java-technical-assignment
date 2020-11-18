@@ -1,5 +1,7 @@
 package kata.supermarket;
 
+import kata.supermarket.product.Item;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
@@ -17,7 +19,7 @@ public class Basket {
         this.items.add(item);
     }
 
-    List<Item> items() {
+    private List<Item> items() {
         return Collections.unmodifiableList(items);
     }
 
