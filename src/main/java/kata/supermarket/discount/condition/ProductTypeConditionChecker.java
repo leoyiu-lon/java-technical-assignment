@@ -4,6 +4,7 @@ import kata.supermarket.product.Item;
 import kata.supermarket.product.ProductType;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ProductTypeConditionChecker implements ConditionChecker {
 
@@ -15,6 +16,5 @@ public class ProductTypeConditionChecker implements ConditionChecker {
 
     @Override
     public List<Item> filterItems(List<Item> items) {
-        return null;
-    }
+        return items.stream().filter(item -> productType == item.getProductType()).collect(Collectors.toList());    }
 }
