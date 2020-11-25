@@ -26,4 +26,10 @@ public class ItemByWeight implements Item {
         return product.getProductType();
     }
 
+    @Override
+    public BigDecimal getWeight() {
+        return weightInKilos;
+    }
+
+
 }

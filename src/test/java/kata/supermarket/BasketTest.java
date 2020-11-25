@@ -3,7 +3,7 @@ package kata.supermarket;
 import kata.supermarket.discount.FreeItemDiscount;
 import kata.supermarket.discount.Discount;
 import kata.supermarket.discount.NoDiscount;
-import kata.supermarket.discount.condition.ConditionChecker;
+import kata.supermarket.discount.WeightedProductPercentDiscount;
 import kata.supermarket.discount.condition.ProductNameConditionChecker;
 import kata.supermarket.discount.condition.ProductTypeConditionChecker;
 import kata.supermarket.product.*;
@@ -31,13 +31,53 @@ class BasketTest {
                 buyOneMilkGetOneFree(),
                 buyOneVegetableGetOneFree(),
                 buyOneGetOneFreeForSingleProductAndProductGroup(),
-                buyThreeItemForThePriceOfTwo()
+                buyThreeItemForThePriceOfTwo(),
+                weightedProductNotMatchPercentageDiscount(),
+                weightedProductWithPercentageDiscount(),
+                weightedProductWithPercentageDiscountForOnlyFirstKilo(),
+                weightedProductWithPercentageDiscountForTwoKilo(),
+                combinedWeightedProductWithPercentageDiscount()
         );
+    }
+
+
+    /**£2 per 1kg of carrots
+
+     Weight: 500g -- Original price: £1 -- Expected discounted price: £1
+     Weight: 1kg -- Original price: £2 -- Expected discounted price: £1
+     Weight: 1.5kg -- Original price: £3 -- Expected discounted price: £2
+     Weight: 2kg -- Original price: £4 -- Expected discounted price: £2
+     Weight: 1x 500g, 1x 1.7kg, 1x 2kg -- Original price: £8.40 -- Expected discounted price: £4.40
+     **/
+    private static Arguments weightedProductNotMatchPercentageDiscount() {
+        return Arguments.of("weightedProductNotMatchPercentageDiscount", "1.00", Arrays.asList(halfOfCarrotsItem()),
+                new WeightedProductPercentDiscount(new ProductNameConditionChecker(ProductName.CARROTS), new BigDecimal(1), 50));
+    }
+
+    private static Arguments weightedProductWithPercentageDiscount() {
+        return Arguments.of("weightedProductWithPercentageDiscount", "1.00", Arrays.asList(aKiloOfCarrotsItem()),
+                new WeightedProductPercentDiscount(new ProductNameConditionChecker(ProductName.CARROTS), new BigDecimal(1), 50));
+    }
+
+    private static Arguments weightedProductWithPercentageDiscountForOnlyFirstKilo() {
+        return Arguments.of("weightedProductWithPercentageDiscountForOnlyFirstKilo", "2.00", Arrays.asList(aKiloAndHalfOfCarrotsItem()),
+                new WeightedProductPercentDiscount(new ProductNameConditionChecker(ProductName.CARROTS), new BigDecimal(1), 50));
+    }
+
+    private static Arguments weightedProductWithPercentageDiscountForTwoKilo() {
+        return Arguments.of("weightedProductWithPercentageDiscountForTwoKilo", "2.00", Arrays.asList(twoKiloOfCarrotsItem()),
+                new WeightedProductPercentDiscount(new ProductNameConditionChecker(ProductName.CARROTS), new BigDecimal(1), 50));
     }
 
     private static Arguments buyThreeItemForThePriceOfTwo() {
         return Arguments.of("buyThreeItemForThePriceOfTwo", "0.98", Arrays.asList(aPintOfMilk(), aPintOfMilk(), aPintOfMilk()),
                 new FreeItemDiscount(new ProductNameConditionChecker(ProductName.MILK), 3, 1));
+    }
+
+    //Weight: 1x 500g, 1x 1.7kg, 1x 2kg -- Original price: £8.40 -- Expected discounted price: £4.40
+    private static Arguments combinedWeightedProductWithPercentageDiscount() {
+        return Arguments.of("weightedProductNotMatchPercentageDiscount", "4.40", Arrays.asList(halfOfCarrotsItem(), OnePointSevenKiloOfCarrotsItem(), twoKiloOfCarrotsItem()),
+                new WeightedProductPercentDiscount(new ProductNameConditionChecker(ProductName.CARROTS), new BigDecimal(1), 50));
     }
 
     private static Arguments buyOneGetOneFreeForSingleProductAndProductGroup() {
@@ -91,6 +131,31 @@ class BasketTest {
     private static ProductByWeight aKiloOfAmericanSweets() {
         return new ProductByWeight(ProductName.SWEETS, ProductType.OTHER, new BigDecimal("4.99"));
     }
+
+    private static ProductByWeight aKiloOfCarrots(){
+        return new ProductByWeight(ProductName.CARROTS, ProductType.VEGETABLES, new BigDecimal(2));
+    }
+
+    private static Item aKiloOfCarrotsItem(){
+        return aKiloOfCarrots().weighing(new BigDecimal(1.0));
+    }
+
+    private static Item aKiloAndHalfOfCarrotsItem(){
+        return aKiloOfCarrots().weighing(new BigDecimal(1.5));
+    }
+
+    private static Item OnePointSevenKiloOfCarrotsItem(){
+        return aKiloOfCarrots().weighing(new BigDecimal(1.7));
+    }
+
+    private static Item twoKiloOfCarrotsItem(){
+        return aKiloOfCarrots().weighing(new BigDecimal(2));
+    }
+
+    private static Item halfOfCarrotsItem(){
+        return aKiloOfCarrots().weighing(new BigDecimal(.5));
+    }
+
 
     private static Item twoFiftyGramsOfAmericanSweets() {
         return aKiloOfAmericanSweets().weighing(new BigDecimal(".25"));

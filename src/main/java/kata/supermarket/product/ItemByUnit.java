@@ -24,4 +24,9 @@ public class ItemByUnit implements Item {
         return productByUnit.getProductType();
     }
 
+    @Override
+    public BigDecimal getWeight() {
+        throw new UnsupportedOperationException();
+    }
+
 }
