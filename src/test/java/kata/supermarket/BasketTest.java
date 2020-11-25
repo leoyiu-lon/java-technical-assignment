@@ -76,7 +76,7 @@ class BasketTest {
 
     //Weight: 1x 500g, 1x 1.7kg, 1x 2kg -- Original price: £8.40 -- Expected discounted price: £4.40
     private static Arguments combinedWeightedProductWithPercentageDiscount() {
-        return Arguments.of("weightedProductNotMatchPercentageDiscount", "4.40", Arrays.asList(halfOfCarrotsItem(), OnePointSevenKiloOfCarrotsItem(), twoKiloOfCarrotsItem()),
+        return Arguments.of("weightedProductNotMatchPercentageDiscount", "4.40", Arrays.asList(halfOfCarrotsItem(), onePointSevenKiloOfCarrotsItem(), twoKiloOfCarrotsItem()),
                 new WeightedProductPercentDiscount(new ProductNameConditionChecker(ProductName.CARROTS), new BigDecimal(1), 50));
     }
 
@@ -144,7 +144,7 @@ class BasketTest {
         return aKiloOfCarrots().weighing(new BigDecimal(1.5));
     }
 
-    private static Item OnePointSevenKiloOfCarrotsItem(){
+    private static Item onePointSevenKiloOfCarrotsItem(){
         return aKiloOfCarrots().weighing(new BigDecimal(1.7));
     }
 
